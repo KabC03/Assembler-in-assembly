@@ -2,7 +2,7 @@
 
 
 
-An EXTREMELY basic assembler in assembly language.
+An EXTREMELY basic assembler in assembly language (ARM).
 
 It uses a hashmap as well as some basic string handling to assemble the language.
 
