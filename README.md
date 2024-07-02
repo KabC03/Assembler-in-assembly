@@ -6,7 +6,7 @@ An EXTREMELY basic assembler in assembly language.
 
 It uses a hashmap as well as some basic string handling to assemble the language.
 
-###__ ISA:__
+### ISA:
 
 
 
