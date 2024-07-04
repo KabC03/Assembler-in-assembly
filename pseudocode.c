@@ -1,7 +1,41 @@
-//Some basic pseudocode for the main loop
+
+
+
+
+
+void dict_store(token, machineCode) {
+
+
+    for(i < numTokens) {
+
+        keys[i] = token;
+        values[i] = machineCode;
+    }
+
+
+    return; 
+}
+
+
+value dict_get(token) {
+
+
+
+    for(i < numTokens) {
+        if(token == keys[i]) {
+            return values[i];
+        }
+    }
+
+
+    return NULL;
+}
 
 
 int main(void) {
+
+
+    dict_store(tokens, machineCode);
 
 
     out = open(outputFile);
@@ -20,7 +54,7 @@ int main(void) {
                 break;
             } else {
 
-                machineCode = hashmap_get(currentToken);
+                machineCode = dict_get(currentToken);
 
                 if(machineCode == NULL) {
                     printf("Unexpected token");
@@ -48,4 +82,3 @@ int main(void) {
 
 
 
- 
