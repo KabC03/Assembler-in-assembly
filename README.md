@@ -8,10 +8,12 @@ It uses a hashmap as well as some basic string handling to assemble the language
 
 ### ISA:
 
+#### Registers
+    EAX, EBX, ECX, EDX - All 32 bit registers
 
 
 #### [R]
-    ADD Rx Ry Rz        - Add the contents of Ry and Rz, placing the result into Rx
+    ADD Rx Ry          - Add the contents of Ry and Rz, placing the result into Rx
 
 
 #### [I]
