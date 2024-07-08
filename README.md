@@ -27,7 +27,7 @@ A hashmap is used to convert pneumonics -> machine code output
 
 #### BLK
 
-    - BLK is padding to ensure all instructions are 4 * 3 = 12 bytes long
+    - BLK (blank) is padding to ensure all instructions are 4 * 3 = 12 bytes long
 
 #### [R]
     ADD Rx Ry BLK       - Add the contents of Ry and Rz, placing the result into Rx
