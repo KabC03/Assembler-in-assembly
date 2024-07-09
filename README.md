@@ -30,19 +30,19 @@ A hashmap is used to convert pneumonics -> machine code output.
 
     - BLK (blank) is padding to ensure all instructions are 4 * 3 = 12 bytes long
 
-#### [R]
+#### [R]egister
     ADD Rx Ry BLK       - Add the contents of Ry and Rz, placing the result into Rx
 
 
-#### [I]
+#### [I]mmediate
     LIR Rx Imm          - Load an immediate 'Imm' into the register Rx
 
-#### [M]
+#### [M]emory
     PSH Rx BLK          - Push Rx onto the stack
     POP Rx BLK          - Pop from the stack into Rx
 
 
-#### [J]
+#### [J]ump
     JEQ Rx Ry Imm       - Jump 'Imm' number of instructions if Rx == Ry
 
 
