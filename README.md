@@ -36,6 +36,8 @@ A hashmap is used to convert pneumonics -> machine code output.
 
 #### [I]
     LIR Rx Imm          - Load an immediate 'Imm' into the register Rx
+
+#### [M]
     PSH Rx BLK          - Push Rx onto the stack
     POP Rx BLK          - Pop from the stack into Rx
 
