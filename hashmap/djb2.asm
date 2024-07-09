@@ -1,6 +1,4 @@
-%define HASH_TABLE_SIZE 100
-%define KEY_LENGTH 3
-%define DJB2_HASH_SEED 5381
+; This file contains the code for the DJB2 hash function
 
 section .data
 	str: db "abc"
