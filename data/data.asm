@@ -1,7 +1,14 @@
 ; This file contains various buffers and definitions used by the assembler
 
-
+; File processing
 %define LINE_BUFFER_SIZE 1000
+
+; Hashmap
+%define HASH_TABLE_SIZE 100
+%define KEY_LENGTH 3
+%define DJB2_HASH_SEED 5381
+
+
 section .data
 
 	; Keys
