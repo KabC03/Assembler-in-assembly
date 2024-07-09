@@ -3,9 +3,8 @@
 
 
 An EXTREMELY basic x86 assembler written in assembly language (x86).
-
-It converts a x86-like ISA into MIPS.
-
+The goal of this project was more about learning how to write x86 rather than creating a proficient assembler.
+It converts an x86-like ISA into MIPS.
 A hashmap is used to convert pneumonics -> machine code output.
 
 ### ISA:
