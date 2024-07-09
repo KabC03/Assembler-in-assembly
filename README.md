@@ -3,8 +3,14 @@
 
 
 An EXTREMELY basic assembler written in assembly language (x86).
+
+
 The goal of this project was more about learning how to write x86 rather than creating a proficient assembler.
-It converts an x86-like ISA into machine code.
+
+
+It converts an x86-like ISA into machine code. Note the output file cannot be executed - since it is not in ELF format.
+
+
 A hashmap is used to convert pneumonics -> machine code output.
 
 ### ISA:
