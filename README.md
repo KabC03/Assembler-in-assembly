@@ -4,7 +4,9 @@
 
 An EXTREMELY basic x86 assembler written in assembly language (x86).
 
-A hashmap is used to convert pneumonics -> machine code output
+It converts a x86-like ISA into MIPS.
+
+A hashmap is used to convert pneumonics -> machine code output.
 
 ### ISA:
 
