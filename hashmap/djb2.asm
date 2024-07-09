@@ -1,6 +1,5 @@
 %define HASH_TABLE_SIZE 100
 %define KEY_LENGTH 3
-
 %define DJB2_HASH_SEED 5381
 
 section .data
