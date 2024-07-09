@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# This is a template file for assembling and running .asm files with nasm (x86 - 32 bit architecture)
 
 programName="program.asm"
 
