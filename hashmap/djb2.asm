@@ -4,7 +4,7 @@
 %define DJB2_HASH_SEED 5381
 
 section .data
-	str: db "poo"
+	str: db "abc"
 section .text
 	global _start
 
@@ -34,6 +34,7 @@ djb2_hash:
 
 	mov ebp, esp
 	push eax	
+	push ecx
 	push edx
 	
 	mov ecx, DJB2_HASH_SEED
@@ -54,14 +55,12 @@ FOR_START:
 	jmp FOR_START
 FOR_END:
 
-	push ebx
 	; Perform modulo
 	mov eax, ecx
 	xor edx, edx
 	mov ebx, HASH_TABLE_SIZE
 	div ebx 
 	mov ecx, edx
-	pop ebx	
 
 	mov esp, ebp
 	ret
