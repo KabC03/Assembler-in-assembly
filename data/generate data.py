@@ -88,7 +88,7 @@ def find_perfect_djb2_hash_constant():
             if(hashTable[indexToInsert] != blankValue):
                 #Collision detected
                 tableIsPerfect = False;
-                continue;
+                break;
             
             else:
                 #Insert at the index - mark it as used
@@ -184,6 +184,10 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main());
+
+
+
+
 
 
 
