@@ -5,7 +5,7 @@ import sys;
 dataFileName = "data.asm";
 djb2HashSeed = 0; #Will get changed by perfect hash function generator
 blankValue = "0" #Blank element in hash table - make sure it doesnt not clash with any keys
-maxTableTries = 100000; #Max tries to find a perfect constant before giving up
+maxTableTries = 1000000; #Max tries to find a perfect constant before giving up
 
 
 #Number of bytes required for inidividual items - update manually
@@ -81,7 +81,7 @@ def find_perfect_djb2_hash_constant():
 
         #Hash all keys in the table - if a collision is detected try again with a different hash constant
         tableIsPerfect = True; #Assume table is perfect until collision met
-        for key in hashTable:
+        for key in sourceCodePneumonics:
 
             indexToInsert = djb2_hash(key);
 
@@ -89,9 +89,15 @@ def find_perfect_djb2_hash_constant():
                 #Collision detected
                 tableIsPerfect = False;
                 continue;
+            
+            else:
+                #Insert at the index - mark it as used
+                hashTable[indexToInsert] = str(indexToInsert);
 
 
         tries += 1; 
+
+    return True;
 
 
 
@@ -157,6 +163,7 @@ def main():
     if(find_perfect_djb2_hash_constant() == False):
         print("Failed to find perfect hash seed\n");
         return -1;
+
 
     #MUST call this first - since it opens for writing NOT appending
     if(write_defines() == False):
