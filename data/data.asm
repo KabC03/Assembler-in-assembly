@@ -1,44 +1,132 @@
-; This file contains various buffers and definitions used by the assembler
+#Generates the data section for the asm program - also write the hash table in assembly
 
-; File processing
-%define LINE_BUFFER_SIZE 1000
+import sys;
 
-; Hashmap
-%define HASH_TABLE_SIZE 100
-%define KEY_LENGTH 3
-%define DJB2_HASH_SEED 5381
+dataFileName = "data.asm";
 
 
-section .data
+preAppendDefines = {
 
-	; Keys
-	; Instructions
-	key_add: db "add" ; Add instruction
-	key_lir: db "lir" ; Load immediate instruction
-	key_psh: db "psh" ; Push instruction	
-	key_pop: db "pop" ; Pop instruction
-	key_jeq: db "jeq" ; Jump if equal instruction
-	key_blk: db "blk" ; Blank marker -> value = 0
+    #File processing
+    "LINE_BUFFER_SIZE" : 1000, 
 
-	; Registers
-	key_eax: db "eax" ; eax register
-	key_ebx: db "ebx" ; ebx register	
-	key_ecx: db "ecx" ; ecx register
-	key_edx: db "edx" ; edx register
-	
+    #Hashmap
+    "HASH_TABLE_SIZE" : 100,
+    "KEY_LENGTH" : 3,
+    "DJB2_HASH_SEED" : 5381,
+};
 
 
-	; Values - Machine code
-	; Instrurctions
+#Number of bytes required for inidividual items
+pneumonicLength = 3;
+machineCodeLength = 1;
+sourceCodePneumonocs = {
+
+    #Pneumonic : Machine code
+
+    #Instructions
+    "ADD" : "0", "LIR" : "1", "PSH" : "2", "POP" : "3", "JEQ" : "4", "BLK" : "-1",
+
+    #Registers
+    "EAX" : "0", "EBX" : "1", "ECX" : "2", "EDX" : "3",
+
+};
 
 
-	; Registers
+
+def write_defines():
+    try:
+        with open(dataFileName, 'w') as file:
+
+            file.write("; Defines section\n\n");
+
+            for key, value in preAppendDefines.items():
+                file.write("%define " + str(key) + " " + str(value) + "\n");
 
 
-section .bss
-	
-	line_buffer: resb LINE_BUFFER_SIZE
-	
+            file.write("\n\n\n");
+
+        return True;
+    except:
+        return False;
+
+
+
+
+#Write .data section
+def write_data_section() :
+    try:
+        with open(dataFileName, 'a') as file:
+
+            file.write("; .data section\n");
+            file.write("section .data\n");
+
+
+            file.write("\n\n\n");
+        return True;
+    except:
+        return False;
+
+
+#Write .bss section
+def write_bss_section():
+
+
+    try:
+        with open(dataFileName, 'a') as file:
+
+            file.write("; .bss section\n");
+            file.write("section .bss\n");
+
+            #Space for key hashmap
+            file.write("    keyBuffer: db " + str(len(sourceCodePneumonocs.keys()) * pneumonicLength) + "\n");
+            file.write("    valueBuffer: db " + str(len(sourceCodePneumonocs.values()) * machineCodeLength) + "\n");
+
+
+
+
+        return True;
+    except:
+        return False;
+
+
+
+def main():
+
+    #MUST call this first - since it opens for writing NOT appending
+    if(write_defines() == False):
+        print("Failed to write defines section\n");
+        return -1;
+    if(write_data_section() == False):
+        print("Failed to write .data section\n");
+        return -2;
+    if(write_bss_section() == False):
+        print("Failed to write .bss section");
+        return -3;
+
+
+
+    return 0;
+
+
+
+if __name__ == "__main__":
+    sys.exit(main());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
