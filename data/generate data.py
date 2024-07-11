@@ -5,7 +5,7 @@ import sys;
 dataFileName = "data.asm";
 djb2HashSeed = 0; #Will get changed by perfect hash function generator
 blankValue = "0" #Blank element in hash table - make sure it doesnt not clash with any keys
-maxTableTries = 1000000; #Max tries to find a perfect constant before giving up
+maxTableTries = 10000000; #Max tries to find a perfect constant before giving up
 
 
 #Number of bytes required for inidividual items - update manually
@@ -94,7 +94,7 @@ def find_perfect_djb2_hash_constant():
                 #Insert at the index - mark it as used
                 hashTable[indexToInsert] = str(indexToInsert);
 
-
+        djb2HashSeed += 1;
         tries += 1; 
 
     return True;
@@ -184,11 +184,6 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main());
-
-
-
-
-
 
 
 
