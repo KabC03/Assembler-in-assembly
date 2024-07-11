@@ -3,7 +3,7 @@
 import sys;
 
 dataFileName = "data.asm";
-djb2Hash = 5381; #Will get changed by perfect hash function generator
+djb2Hash = 0; #Will get changed by perfect hash function generator
 
 preAppendDefines = {
 
@@ -31,6 +31,31 @@ sourceCodePneumonocs = {
     "EAX" : "0", "EBX" : "1", "ECX" : "2", "EDX" : "3",
 
 };
+
+
+
+#Iterate through lots of starting seeds to see if a perfect table was generated
+def find_perfect_hash_constant():
+
+    #Blank array to store hashes
+    hashTable = list(sourceCodePneumonocs.keys());
+    hashTableIsPerfect = False;
+
+
+    #Set this to the blank list value - its inefficient but garuntees a blank element is not mistaken for one in the list
+    blankValue = "".join(hashTable)
+
+    while(hashTableIsPerfect == False):
+        
+        #For each element, hash it, if it collides with another element then table is not perfect - iterate seed
+
+
+
+
+
+
+
+
 
 
 
@@ -90,19 +115,22 @@ def write_bss_section():
         return False;
 
 
-
 def main():
+
+    if(find_perfect_hash_constant() == False):
+        print("Failed to find perfect hash seed\n");
+        return -1;
 
     #MUST call this first - since it opens for writing NOT appending
     if(write_defines() == False):
         print("Failed to write defines section\n");
-        return -1;
+        return -2;
     if(write_data_section() == False):
         print("Failed to write .data section\n");
-        return -2;
+        return -3;
     if(write_bss_section() == False):
         print("Failed to write .bss section");
-        return -3;
+        return -4;
 
 
 
@@ -112,6 +140,19 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main());
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
