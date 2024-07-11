@@ -4,7 +4,6 @@ import sys;
 
 dataFileName = "data.asm";
 djb2HashSeed = 0; #Will get changed by perfect hash function generator
-blankValue = "0" #Blank element in hash table - make sure it doesnt not clash with any keys
 maxTableTries = 10000000; #Max tries to find a perfect constant before giving up
 
 
@@ -53,17 +52,7 @@ def find_perfect_djb2_hash_constant():
     global djb2HashSeed;
 
     hashTable = list(sourceCodePneumonics.keys());
-
-    #Check for blank value clash with keys
-    for i in range(0,len(hashTable)):
-        if(hashTable[i] == blankValue):
-            print("Blank value: '" + str(blankValue) + "' collided with pneumonic: '" + str(hashTable[i]) + "'\n");
-            return False;
-
-
     tableIsPerfect = False;
-
-
     tries = 0;
     while(tableIsPerfect == False):
 
@@ -76,7 +65,7 @@ def find_perfect_djb2_hash_constant():
 
         #Zero out the table
         for i in range(0,len(hashTable)):
-            hashTable[i] = blankValue;
+            hashTable[i] = None;
 
 
         #Hash all keys in the table - if a collision is detected try again with a different hash constant
@@ -85,7 +74,7 @@ def find_perfect_djb2_hash_constant():
 
             indexToInsert = djb2_hash(key);
 
-            if(hashTable[indexToInsert] != blankValue):
+            if(hashTable[indexToInsert] != None):
                 #Collision detected
                 tableIsPerfect = False;
                 break;
@@ -184,6 +173,7 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main());
+
 
 
 
