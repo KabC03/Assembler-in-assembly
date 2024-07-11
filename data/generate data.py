@@ -3,8 +3,8 @@
 import sys;
 
 dataFileName = "data.asm";
-djb2HashSeed = 0; #Will get changed by perfect hash function generator
-maxTableTries = 10000000; #Max tries to find a perfect constant before giving up
+djb2HashSeed = 5381; #Will get changed by perfect hash function generator
+maxTableTries = 10; #Max tries to find a perfect constant before giving up
 
 
 #Number of bytes required for inidividual items - update manually
@@ -38,9 +38,13 @@ preAppendDefines = {
 #Hash a key
 def djb2_hash(key):
 
+
+
     djb2Hash = djb2HashSeed;
     for character in key:
         djb2Hash = ((djb2Hash * 33) + djb2Hash) + ord(character);
+
+    #print(str(djb2Hash % 10) + "   "  + str(key));
 
     return djb2Hash % hashTableSize;
 
@@ -76,6 +80,7 @@ def find_perfect_djb2_hash_constant():
 
             if(hashTable[indexToInsert] != None):
                 #Collision detected
+                #print("Collision with: " + str(hashTable[indexToInsert]));
                 tableIsPerfect = False;
                 break;
             
