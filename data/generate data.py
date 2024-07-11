@@ -3,24 +3,18 @@
 import sys;
 
 dataFileName = "data.asm";
-djb2Hash = 0; #Will get changed by perfect hash function generator
-
-preAppendDefines = {
-
-    #File processing
-    "LINE_BUFFER_SIZE" : 1000, 
-
-    #Hashmap
-    "HASH_TABLE_SIZE" : 100,
-    "KEY_LENGTH" : 3,
-    "DJB2_HASH_SEED" : 5381,
-};
+djb2HashSeed = 0; #Will get changed by perfect hash function generator
+blankValue = "0" #Blank element in hash table - make sure it doesnt not clash with any keys
+maxTableTries = 100000; #Max tries to find a perfect constant before giving up
 
 
-#Number of bytes required for inidividual items
+#Number of bytes required for inidividual items - update manually
 pneumonicLength = 3;
 machineCodeLength = 1;
-sourceCodePneumonocs = {
+
+
+
+sourceCodePneumonics = {
 
     #Pneumonic : Machine code
 
@@ -31,30 +25,73 @@ sourceCodePneumonocs = {
     "EAX" : "0", "EBX" : "1", "ECX" : "2", "EDX" : "3",
 
 };
+hashTableSize = len(sourceCodePneumonics.keys());
+preAppendDefines = {
 
+    #File processing
+    "LINE_BUFFER_SIZE" : 1000, 
 
-
-#Iterate through lots of starting seeds to see if a perfect table was generated
-def find_perfect_hash_constant():
-
-    #Blank array to store hashes
-    hashTable = list(sourceCodePneumonocs.keys());
-    hashTableIsPerfect = False;
-
-
-    #Set this to the blank list value - its inefficient but garuntees a blank element is not mistaken for one in the list
-    blankValue = "".join(hashTable)
-
-    while(hashTableIsPerfect == False):
-        
-        #For each element, hash it, if it collides with another element then table is not perfect - iterate seed
+};
 
 
 
 
+#Hash a key
+def djb2_hash(key):
+
+    djb2Hash = djb2HashSeed;
+    for character in key:
+        djb2Hash = ((djb2Hash * 33) + djb2Hash) + ord(character);
+
+    return djb2Hash % hashTableSize;
 
 
 
+
+#Find a perfect hash function
+def find_perfect_djb2_hash_constant():
+    global djb2HashSeed;
+
+    hashTable = list(sourceCodePneumonics.keys());
+
+    #Check for blank value clash with keys
+    for i in range(0,len(hashTable)):
+        if(hashTable[i] == blankValue):
+            print("Blank value: '" + str(blankValue) + "' collided with pneumonic: '" + str(hashTable[i]) + "'\n");
+            return False;
+
+
+    tableIsPerfect = False;
+
+
+    tries = 0;
+    while(tableIsPerfect == False):
+
+        #Exit if max tries are reached
+        if(tries == maxTableTries):
+            print("Could not find perfect hash within '" + str(maxTableTries) + "' tries\n");
+            return False;
+
+
+
+        #Zero out the table
+        for i in range(0,len(hashTable)):
+            hashTable[i] = blankValue;
+
+
+        #Hash all keys in the table - if a collision is detected try again with a different hash constant
+        tableIsPerfect = True; #Assume table is perfect until collision met
+        for key in hashTable:
+
+            indexToInsert = djb2_hash(key);
+
+            if(hashTable[indexToInsert] != blankValue):
+                #Collision detected
+                tableIsPerfect = False;
+                continue;
+
+
+        tries += 1; 
 
 
 
@@ -105,7 +142,7 @@ def write_bss_section():
 
             #Space for key hashmap
             #file.write("    keyBuffer: db " + str(len(sourceCodePneumonocs.keys()) * pneumonicLength) + "\n"); #Keys dont need to be stored
-            file.write("    valueBuffer: db " + str(len(sourceCodePneumonocs.values()) * machineCodeLength) + "\n");
+            file.write("    valueBuffer: db " + str(len(sourceCodePneumonics.values()) * machineCodeLength) + "\n");
 
 
 
@@ -117,7 +154,7 @@ def write_bss_section():
 
 def main():
 
-    if(find_perfect_hash_constant() == False):
+    if(find_perfect_djb2_hash_constant() == False):
         print("Failed to find perfect hash seed\n");
         return -1;
 
@@ -132,7 +169,7 @@ def main():
         print("Failed to write .bss section");
         return -4;
 
-
+    #In .text section write a function that inserts values at their index found in find_perfect_hash_function();
 
     return 0;
 
