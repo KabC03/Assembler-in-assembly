@@ -57,5 +57,10 @@ A hashmap is used to convert pneumonics -> machine code output.
 
 
 
-
+TODO:
+- File handling in asm
+- Read into a buffer of a fixed with and go line by line
+- Hash the string
+- Index into the hashmap array in data.asm
+- Print that machine code to the output
 
