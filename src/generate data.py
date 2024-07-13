@@ -2,7 +2,7 @@
 
 import sys;
 
-dataFileName = "data.asm";
+dataFileName = "hashmap data.asm";
 djb2HashSeed = 5381; #Will get changed by perfect hash function generator
 maxTableTries = 10; #Max tries to find a perfect constant before giving up
 perfectHashTable = []; #Perfect hash table array
@@ -107,7 +107,8 @@ def find_perfect_djb2_hash_constant():
 def write_defines():
     try:
         with open(dataFileName, 'w') as file:
-
+            file.write("; 14 Jun, 2024\n");
+            file.write("; This file contains the hashmap data\n\n\n");
             file.write("; Defines section\n\n");
 
             for key, value in preAppendDefines.items():
