@@ -161,11 +161,33 @@ def write_text_section():
         with open(dataFileName, 'a') as file:
 
             file.write("; .text section\n");
-            file.write("section .section\n");
+            file.write("section .section\n\n");
 
             #Store the perfect hash table in the .bss block
             #Just iterate over each character and store it as a byte
             #Store 1, 2 or 4 bytes depending on the remaining lenght of the string
+
+            file.write("    push eax\n");
+            file.write("    lea edi, [valueBuffer]\n");
+            counter = 0;
+            remainingLength = len(sourceCodePneumonics.values());
+            stringToWrite = " ".join(perfectHashTable);
+
+            while(remainingLength != 0):
+
+
+                if(remainingLength - 4 >= 0):
+                    #Write the next 4 characters
+                    pass;
+                elif(remainingLength - 2 >= 0):
+                    #Write the next 2 characters
+                    pass;
+                else:
+                    #Write only one character
+                    file.write("    mov al, " + str() + "\n");
+
+                counter += 1;
+
 
 
         return True;
@@ -201,24 +223,6 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
