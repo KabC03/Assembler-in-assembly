@@ -4,8 +4,8 @@ import sys;
 
 dataFileName = "data.asm";
 djb2HashSeed = 5381; #Will get changed by perfect hash function generator
-maxTableTries = 10; #Max tries to find a perfect constant before giving up
-
+maxTableTries = 100000; #Max tries to find a perfect constant before giving up
+perfectHashTable = []; #Perfect hash table array
 
 #Number of bytes required for inidividual items - update manually
 pneumonicLength = 3;
@@ -54,8 +54,9 @@ def djb2_hash(key):
 #Find a perfect hash function
 def find_perfect_djb2_hash_constant():
     global djb2HashSeed;
+    global perfectHashTable;
 
-    hashTable = list(sourceCodePneumonics.keys());
+    perfectHashTable = list(sourceCodePneumonics.keys());
     tableIsPerfect = False;
     tries = 0;
     while(tableIsPerfect == False):
@@ -68,8 +69,8 @@ def find_perfect_djb2_hash_constant():
 
 
         #Zero out the table
-        for i in range(0,len(hashTable)):
-            hashTable[i] = None;
+        for i in range(0,len(perfectHashTable)):
+            perfectHashTable[i] = None;
 
 
         #Hash all keys in the table - if a collision is detected try again with a different hash constant
@@ -78,7 +79,7 @@ def find_perfect_djb2_hash_constant():
 
             indexToInsert = djb2_hash(key);
 
-            if(hashTable[indexToInsert] != None):
+            if(perfectHashTable[indexToInsert] != None):
                 #Collision detected
                 #print("Collision with: " + str(hashTable[indexToInsert]));
                 tableIsPerfect = False;
@@ -86,7 +87,7 @@ def find_perfect_djb2_hash_constant():
             
             else:
                 #Insert at the index - mark it as used
-                hashTable[indexToInsert] = str(indexToInsert);
+                perfectHashTable[indexToInsert] = str(indexToInsert);
 
         djb2HashSeed += 1;
         tries += 1; 
@@ -150,6 +151,28 @@ def write_bss_section():
         return True;
     except:
         return False;
+
+
+
+def write_text_section():
+
+
+    try:
+        with open(dataFileName, 'a') as file:
+
+            file.write("; .text section\n");
+            file.write("section .section\n");
+
+            #Store the perfect hash table in the .bss block
+            #Just iterate over each character and store it as a byte
+            #Store 1, 2 or 4 bytes depending on the remaining lenght of the string
+
+
+        return True;
+    except:
+        return False;
+
+
 
 
 def main():
