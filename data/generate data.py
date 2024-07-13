@@ -4,7 +4,7 @@ import sys;
 
 dataFileName = "data.asm";
 djb2HashSeed = 5381; #Will get changed by perfect hash function generator
-maxTableTries = 100000; #Max tries to find a perfect constant before giving up
+maxTableTries = 10; #Max tries to find a perfect constant before giving up
 perfectHashTable = []; #Perfect hash table array
 
 #Number of bytes required for inidividual items - update manually
@@ -49,6 +49,13 @@ def djb2_hash(key):
     return djb2Hash % hashTableSize;
 
 
+#Convert a string into ASCII
+def convert_string_to_ASCII(string):
+
+    asciiString = "";
+    for character in string:
+        asciiString += str(ord(character));
+    return asciiString;
 
 
 #Find a perfect hash function
@@ -161,7 +168,9 @@ def write_text_section():
         with open(dataFileName, 'a') as file:
 
             file.write("; .text section\n");
-            file.write("section .section\n\n");
+            file.write("section .text\n\n");
+            file.write("initialise_hashmap:\n");
+
 
             #Store the perfect hash table in the .bss block
             #Just iterate over each character and store it as a byte
@@ -169,27 +178,39 @@ def write_text_section():
 
             file.write("    push eax\n");
             file.write("    lea edi, [valueBuffer]\n");
-            counter = 0;
+            index = 0;
             remainingLength = len(sourceCodePneumonics.values());
-            stringToWrite = " ".join(perfectHashTable);
+
+            perfectHashTable = sourceCodePneumonics.keys();
+            stringToWrite = "".join(perfectHashTable);
 
             while(remainingLength != 0):
-
+                immediate = 0;
 
                 if(remainingLength - 4 >= 0):
                     #Write the next 4 characters
-                    pass;
+                    
+                    immediate = convert_string_to_ASCII(stringToWrite[index:index+4]);
+                    file.write("    mov dword [edi], " + str(immediate) + "\n");
+                    file.write("    add edi, " + str(machineCodeLength * 4));
+                    remainingLength -= 4;
+                    index += 4;
+
                 elif(remainingLength - 2 >= 0):
                     #Write the next 2 characters
-                    pass;
+                    immediate = convert_string_to_ASCII(stringToWrite[index:index+2]);
+                    file.write("    mov word [edi], " + str(immediate) + "\n");
+                    file.write("    add edi, " + str(machineCodeLength * 2));
+                    remainingLength -= 2;
+                    index += 2;
+
                 else:
                     #Write only one character
-                    file.write("    mov al, " + str() + "\n");
-
-                counter += 1;
-
-
-
+                    immediate = convert_string_to_ASCII(stringToWrite[index:index+1]);
+                    file.write("    mov byte [edi], " + str(immediate) + "\n");
+                    file.write("    add edi, " + str(machineCodeLength * 1));
+                    remainingLength -= 1;
+                    index += 1;
         return True;
     except:
         return False;
@@ -202,6 +223,7 @@ def main():
     if(find_perfect_djb2_hash_constant() == False):
         print("Failed to find perfect hash seed\n");
         return -1;
+        pass;
 
 
     #MUST call this first - since it opens for writing NOT appending
@@ -214,16 +236,20 @@ def main():
     if(write_bss_section() == False):
         print("Failed to write .bss section");
         return -4;
+    if(write_text_section() == False):
+        print("Failed to write .text section");
+        return -5; 
+
+
 
     #In .text section write a function that inserts values at their index found in find_perfect_hash_function();
-
     return 0;
+
 
 
 
 if __name__ == "__main__":
     sys.exit(main());
-
 
 
 
