@@ -176,7 +176,8 @@ def write_text_section():
             #Just iterate over each character and store it as a byte
             #Store 1, 2 or 4 bytes depending on the remaining lenght of the string
 
-            file.write("    push eax\n");
+            file.write("    mov ebp, esp\n");
+            file.write("    push edi\n");
             file.write("    lea edi, [valueBuffer]\n");
             index = 0;
             remainingLength = len(sourceCodePneumonics.values());
@@ -192,7 +193,7 @@ def write_text_section():
                     
                     immediate = convert_string_to_ASCII(stringToWrite[index:index+4]);
                     file.write("    mov dword [edi], " + str(immediate) + "\n");
-                    file.write("    add edi, " + str(machineCodeLength * 4));
+                    file.write("    add edi, " + str(machineCodeLength * 4) + "\n");
                     remainingLength -= 4;
                     index += 4;
 
@@ -200,7 +201,7 @@ def write_text_section():
                     #Write the next 2 characters
                     immediate = convert_string_to_ASCII(stringToWrite[index:index+2]);
                     file.write("    mov word [edi], " + str(immediate) + "\n");
-                    file.write("    add edi, " + str(machineCodeLength * 2));
+                    file.write("    add edi, " + str(machineCodeLength * 2) + "\n");
                     remainingLength -= 2;
                     index += 2;
 
@@ -208,9 +209,14 @@ def write_text_section():
                     #Write only one character
                     immediate = convert_string_to_ASCII(stringToWrite[index:index+1]);
                     file.write("    mov byte [edi], " + str(immediate) + "\n");
-                    file.write("    add edi, " + str(machineCodeLength * 1));
+                    file.write("    add edi, " + str(machineCodeLength * 1) + "\n");
                     remainingLength -= 1;
                     index += 1;
+            
+            
+            file.write("    mov esp, ebp\n");
+            file.write("    ret\n");
+            file.write("\n\n\n");
         return True;
     except:
         return False;
@@ -223,7 +229,6 @@ def main():
     if(find_perfect_djb2_hash_constant() == False):
         print("Failed to find perfect hash seed\n");
         return -1;
-        pass;
 
 
     #MUST call this first - since it opens for writing NOT appending
