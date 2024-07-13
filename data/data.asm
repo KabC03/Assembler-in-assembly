@@ -16,10 +16,17 @@ section .bss
 section .text
 
 initialise_hashmap:
-    push eax
+    mov ebp, esp
+    push edi
     lea edi, [valueBuffer]
     mov dword [edi], 65686876
-    add edi, 4    mov dword [edi], 73828083
-    add edi, 4    mov word [edi], 7280
+    add edi, 4
+    mov dword [edi], 73828083
+    add edi, 4
+    mov word [edi], 7280
     add edi, 2
+    mov esp, ebp
+    ret
+
+
 
