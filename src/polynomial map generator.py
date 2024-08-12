@@ -28,7 +28,7 @@ sourceCodePneumonics = {
     #"R0" : "0", "R1" : "1", "R2" : "2", "R3" : "3",
 
 };
-outputFilePath = "./data/polymap.asm";
+outputFilePath = "./src/polymap.asm";
 
 
 
